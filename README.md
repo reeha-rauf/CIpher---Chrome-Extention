@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 ---
 
@@ -167,3 +168,7 @@ For feedback or collaboration:
 
 ### ⭐ If you like this project, star the repo!
 
+=======
+# Google-chrome_AI
+Hackathon
+>>>>>>> 6b10f5a (Initial commit)
