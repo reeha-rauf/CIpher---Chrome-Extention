@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CIpher — Settings</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #1a1f2e;
+      --surface: #0f172a;
+      --surface-2: #1e293b;
+      --border-1: #1e293b;
+      --border-2: #334155;
+      --text: #cbd5e1;
+      --muted: #64748b;
+      --accent: #3b82f6;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 900px;
+      background: var(--surface);
+      border: 1px solid var(--border-1);
+      border-radius: 12px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      border-bottom: 1px solid var(--border-2);
+      padding: 24px 32px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header img {
+      height: 38px;
+      width: 38px;
+      border-radius: 8px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      color: var(--text);
+    }
+
+    .header p {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .content {
+      padding: 32px;
+    }
+
+    .info-box {
+      background: #0e1c2b;
+      border: 1px solid var(--border-2);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 24px;
+    }
+
+    .info-box h3 {
+      color: #93c5fd;
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+
+    .info-box p {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .section {
+      margin-bottom: 32px;
+    }
+
+    .section h2 {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 10px;
+      border-bottom: 1px solid var(--border-2);
+      padding-bottom: 8px;
+    }
+
+    .section p {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 14px;
+    }
+
+    .setting-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface-2);
+      border: 1px solid var(--border-2);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: background 0.2s ease;
+    }
+
+    .setting-item:hover {
+      background: #203043;
+    }
+
+    .setting-info {
+      flex: 1;
+    }
+
+    .setting-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .setting-description {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #2a3445;
+      border: 1px solid var(--border-2);
+      border-radius: 26px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .slider:before {
+      content: "";
+      position: absolute;
+      height: 20px;
+      width: 20px;
+      left: 3px;
+      top: 50%;
+      transform: translateY(-50%);
+      background-color: var(--surface);
+      border: 1px solid var(--border-2);
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    input:checked + .slider {
+      background-color: var(--accent);
+      border-color: var(--accent);
+    }
+
+    input:checked + .slider:before {
+      transform: translate(24px, -50%);
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    button {
+      flex: 1;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #334155;
+      color: var(--text);
+      border: 1px solid var(--border-2);
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: #3d4f63;
+    }
+
+    /* Active state when changes are detected */
+    .btn-primary.has-changes {
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: #ffffff;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary.has-changes:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-secondary {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border-2);
+    }
+
+    .btn-secondary:hover {
+      background: #243447;
+    }
+
+    .footer {
+      background: var(--surface-2);
+      border-top: 1px solid var(--border-1);
+      padding: 20px 32px;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    .footer a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <img src="icon.png" alt="CIpher Logo">
+      <div>
+        <h1>CIpher</h1>
+        <p>Privacy Protection Settings</p>
+      </div>
+    </div>
+
+    <div class="content">
+      <div class="info-box">
+        <h3>About CIpher</h3>
+        <p>
+          CIpher uses Chrome's built-in Prompt API with Gemini Nano to intelligently detect and blur 
+          personally identifiable information (PII) on most web pages. All processing happens locally,
+          ensuring your privacy is never compromised.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>PII Detection Filters</h2>
+        <p>Choose which types of personally identifiable information to detect and blur.</p>
+         <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Email Addresses</div>
+            <div class="setting-description">Blur email addresses like user@example.com</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-email" data-type="email" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Phone Numbers</div>
+            <div class="setting-description">Blur phone numbers in various formats</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-phone" data-type="phone" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Social Security Numbers</div>
+            <div class="setting-description">Blur SSNs like XXX-XX-XXXX</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-ssn" data-type="ssn" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Credit Card Numbers</div>
+            <div class="setting-description">Blur credit and debit card numbers</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-credit-card" data-type="credit_card" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Physical Addresses</div>
+            <div class="setting-description">Blur street addresses and locations</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-address" data-type="address" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">Passwords</div>
+            <div class="setting-description">Blur visible passwords and credentials</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-password" data-type="password" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">API Keys & Tokens</div>
+            <div class="setting-description">Blur API keys, access tokens, and secrets</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="filter-api-key" data-type="api_key" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+      </div>
+
+        <!-- PII Filters (unchanged) -->
+        <!-- [Email, Phone, SSN, Credit Card, Address, Password, API Key toggles stay here as in your version] -->
+      
+
+      <div class="button-group">
+        <button class="btn-primary" id="save-btn">Save Settings</button>
+        <button class="btn-secondary" id="reset-btn">Reset to Defaults</button>
+      </div>
+    </div>
+
+    <div class="footer">
+      <p><strong style="color: var(--text);">CIpher</strong></p>
+      <p>Powered by Chrome's Prompt API with Gemini Nano</p>
+      <p style="margin-top: 10px;">
+        <a href="https://developer.chrome.com/docs/ai" target="_blank" rel="noopener">
+          Learn about Chrome Built-in AI
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>

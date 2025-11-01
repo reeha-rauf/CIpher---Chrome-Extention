@@ -1,0 +1,103 @@
+/* Cipher - Blur Overlay Styles */
+
+.screenguard-overlay {
+  position: fixed;               /* JS sets this too, declaring here won’t hurt */
+  z-index: 999999;               /* ensure it sits above page content & badge */
+  background: rgba(0, 0, 0, 0.28);   /* subtler mask pairs well with blur */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 6px;
+  pointer-events: none;          /* non-interactive by default */
+  user-select: none;
+  will-change: transform;
+  transition: opacity 0.2s ease, background 0.2s ease;
+}
+
+/* Variant tuning by type (optional, driven by data attribute from JS) */
+.screenguard-overlay[data-pii-type="image"] {
+  border-radius: 8px;
+}
+.screenguard-overlay[data-pii-type="password"],
+.screenguard-overlay[data-pii-type="api_key"] {
+  background: rgba(0, 0, 0, 0.36);
+}
+
+/* If you want hover effects, enable pointer events on hover only.
+   Otherwise, remove this block as it has no effect when pointer-events: none */
+.screenguard-overlay:hover {
+  /* pointer-events: auto;  <-- uncomment if you add buttons on overlays */
+  opacity: 0.9;
+}
+
+/* Fallback: when backdrop-filter isn't supported, increase opacity a bit */
+@supports not ((backdrop-filter: blur(12px)) or (-webkit-backdrop-filter: blur(12px))) {
+  .screenguard-overlay {
+    background: rgba(0, 0, 0, 0.45);
+  }
+}
+
+/* Privacy Score Floating Badge */
+.screenguard-privacy-badge {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #12100E;
+  padding: 12px 16px;
+  border-radius: 50px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+  z-index: 999998;               /* keep below overlay (overlay is 999999) */
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  user-select: none;
+  border: 2px solid #4A4B2F;
+}
+
+.screenguard-privacy-badge:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(0,0,0,0.4);
+  border-color: #6B654B;
+}
+
+.score-circle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.score-number {
+  font-size: 20px;
+  line-height: 1;
+}
+
+.score-max {
+  font-size: 10px;
+  opacity: 0.9;
+}
+
+.score-details {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.score-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  color: #D4DF9E;
+}
+
+.score-info {
+  font-size: 11px;
+  color: #6B654B;
+}

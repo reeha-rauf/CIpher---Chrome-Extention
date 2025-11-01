@@ -1,0 +1,53 @@
+{
+  "manifest_version": 3,
+  "name": "CIpher",
+  "version": "1.1.0",
+  "description": "Real-time privacy protection using Chrome's built-in AI to detect and blur any Personally Identifiable Information (PII).",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "tabCapture"
+  ],
+  "host_permissions": ["<all_urls>"],
+
+  "web_accessible_resources": [{
+    "matches": ["<all_urls>"]
+  }],
+  
+  "background": {
+    "service_worker": "background.js"
+  },
+
+  "action": {
+    "default_title": "CIpher",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["content.css"],
+      "run_at": "document_idle",
+      "all_frames": true
+    }
+  ],
+
+  "options_page": "options.html",
+
+  "commands": {
+    "toggle-masking": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+P",
+        "mac": "Command+Shift+P"
+      },
+      "description": "Toggle PII masking on/off"
+    }
+  }
+}
